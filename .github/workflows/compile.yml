@@ -10,7 +10,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: 'v1.218.0' # Force checks out a fully verified release tag
           submodules: recursive
 
       - name: Set up JDK 21
@@ -26,7 +25,7 @@ jobs:
       - name: Build Plugin Jar
         run: |
           chmod +x gradlew
-          ./gradlew shadowJar --no-daemon -x test
+          ./gradlew shadowJar --no-daemon --stacktrace -x test
 
       - name: Upload Finished Jar Artifact
         uses: actions/upload-artifact@v4
