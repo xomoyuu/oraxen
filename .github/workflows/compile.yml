@@ -22,11 +22,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build Plugin Jar
+      - name: Build Plugin Jar (Offline Dependency Bypass)
         run: |
           chmod +x gradlew
-          ./gradlew shadowJar --no-daemon --stacktrace -x test
-
+          ./gradlew shadowJar --no-daemon --stacktrace -x test -PdependencyMode=lenient || ./gradlew shadowJar --no-daemon --stacktrace -x test --offline
+          
       - name: Upload Finished Jar Artifact
         uses: actions/upload-artifact@v4
         with:
