@@ -9,21 +9,26 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: 'gradle'
 
-      - name: Validate Gradle Wrapper
-        uses: gradle/actions/wrapper-validation@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-      - name: Build with Gradle
-        run: chmod +x gradlew && ./gradlew shadowJar
+      - name: Build Plugin Jar
+        run: |
+          chmod +x gradlew
+          ./gradlew shadowJar --no-daemon
 
       - name: Upload Finished Jar Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Oraxen-Jar
-          path: build/libs/*shadow.jar
+          path: '**/build/libs/*shadow.jar'
